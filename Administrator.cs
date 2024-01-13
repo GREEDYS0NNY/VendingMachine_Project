@@ -115,7 +115,8 @@ namespace VendingMachine
                 Console.WriteLine("2. Remove Drink");
                 Console.WriteLine("3. View Available Drinks");
                 Console.WriteLine("4. View Transactions");
-                Console.WriteLine("5. Exit Admin menu");
+                Console.WriteLine("5. Delete All Transactions");
+                Console.WriteLine("6. Exit Admin menu");
                 Console.WriteLine();
                 Console.Write("Enter your choice: ");
 
@@ -156,6 +157,16 @@ namespace VendingMachine
                         Console.Clear();
                         break;
                     case 5:
+                        Console.Clear();
+                        vendingMachine.DeleteAllTransactions();
+                        Console.WriteLine();
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.Write("All transactions have been deleted succesfully!");
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.ReadKey();
+                        Console.Clear();
+                        break;
+                    case 6:
                         Console.ForegroundColor = ConsoleColor.Green;
                         Console.Write("Exiting Admin menu...");
                         Console.ForegroundColor = ConsoleColor.White;
@@ -192,7 +203,7 @@ namespace VendingMachine
 
             foreach (Transaction transaction in transactions)
             {
-                Console.WriteLine($"Id: {transaction.PurchasedDrink.Id}; Name: {transaction.PurchasedDrink.Name}; " +
+                Console.WriteLine($"Drink Id: {transaction.PurchasedDrink.Id}; Name: {transaction.PurchasedDrink.Name}; " +
                 $"Price: {transaction.TotalSum} zł; Time: {transaction.PurchaseTime};");
                 Console.WriteLine("-------------------------------------------------------------------");
             }

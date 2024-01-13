@@ -61,6 +61,7 @@
                         }
 
                         Console.WriteLine();
+                        Console.WriteLine();
                         Console.ForegroundColor = ConsoleColor.Green;
                         Console.WriteLine("Thanks for the purchase!");
                         Console.ForegroundColor = ConsoleColor.White;

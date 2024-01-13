@@ -49,6 +49,17 @@ namespace VendingMachine
             command.ExecuteNonQuery();
         }
 
+        public void DeleteAllTransactions()
+        {
+            using SqlConnection connection = new(connectionString);
+            connection.Open();
+
+            string deleteQuery = "TRUNCATE TABLE Transactions";
+
+            using SqlCommand command = new(deleteQuery, connection);
+            command.ExecuteNonQuery();
+        }
+
         public void ViewAvailableDrinks()
         {
             List<Drink> availableDrinks = GetAvailableDrinks();
