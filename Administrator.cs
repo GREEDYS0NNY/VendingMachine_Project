@@ -5,11 +5,12 @@ namespace VendingMachine
     internal class Administrator : User
     {
         private readonly VendingMachine vendingMachine;
+        private readonly string PASSWORD = "1234"; 
         public Administrator(VendingMachine machine) : base(machine)
         {
             vendingMachine = machine;
         }
-   
+        
         private void AddDrink()
         {
             List<Drink> availableDrinks = vendingMachine.GetAvailableDrinks();
@@ -102,65 +103,81 @@ namespace VendingMachine
 
         public void ManageInventory()
         {
-            Console.WriteLine("Admin menu:");
-            Console.WriteLine("1. Add Drink");
-            Console.WriteLine("2. Remove Drink");
-            Console.WriteLine("3. View Available Drinks");
-            Console.WriteLine("4. View Transactions");
-            Console.WriteLine("5. Exit Admin menu");
-            Console.WriteLine();
-            Console.Write("Enter your choice: ");
+            bool isAllowed = CheckPassword();
 
-            _ = int.TryParse(Console.ReadLine(), out int choice);
-
-            Console.WriteLine();
-
-            switch (choice)
+            if (isAllowed)
             {
-                case 1:
-                    Console.Clear();
-                    AddDrink();
-                    Console.ReadKey();
-                    Console.Clear();
-                    break;
-                case 2:
-                    Console.Clear();
-                    vendingMachine.ViewAvailableDrinks();
-                    Console.WriteLine();
-                    RemoveDrink();
-                    Console.ReadKey();
-                    Console.Clear();
-                    break;
-                case 3:
-                    Console.Clear();
-                    vendingMachine.ViewAvailableDrinks();
-                    Console.WriteLine();
-                    Console.Write("Enter to main menu ");
-                    Console.ReadKey();
-                    Console.Clear();
-                    break;
-                case 4:
-                    Console.Clear();
-                    ViewTransactions();
-                    Console.WriteLine();
-                    Console.Write("Enter to main menu...");
-                    Console.ReadKey();
-                    Console.Clear();
-                    break;
-                case 5:
-                    Console.ForegroundColor= ConsoleColor.Green;
-                    Console.Write("Exiting Admin menu...");
-                    Console.ForegroundColor = ConsoleColor.White;
-                    Console.ReadKey();
-                    Console.Clear();
-                    break;
-                default:
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.Write("❌ Invalid choice. Exiting Admin menu...");
-                    Console.ForegroundColor = ConsoleColor.White;
-                    Console.ReadKey();
-                    Console.Clear();
-                    break;
+                Console.ReadKey();
+                Console.Clear();
+
+                Console.WriteLine("Admin menu:");
+                Console.WriteLine("1. Add Drink");
+                Console.WriteLine("2. Remove Drink");
+                Console.WriteLine("3. View Available Drinks");
+                Console.WriteLine("4. View Transactions");
+                Console.WriteLine("5. Exit Admin menu");
+                Console.WriteLine();
+                Console.Write("Enter your choice: ");
+
+                _ = int.TryParse(Console.ReadLine(), out int choice);
+
+                Console.WriteLine();
+
+                switch (choice)
+                {
+                    case 1:
+                        Console.Clear();
+                        AddDrink();
+                        Console.ReadKey();
+                        Console.Clear();
+                        break;
+                    case 2:
+                        Console.Clear();
+                        vendingMachine.ViewAvailableDrinks();
+                        Console.WriteLine();
+                        RemoveDrink();
+                        Console.ReadKey();
+                        Console.Clear();
+                        break;
+                    case 3:
+                        Console.Clear();
+                        vendingMachine.ViewAvailableDrinks();
+                        Console.WriteLine();
+                        Console.Write("Enter to main menu ");
+                        Console.ReadKey();
+                        Console.Clear();
+                        break;
+                    case 4:
+                        Console.Clear();
+                        ViewTransactions();
+                        Console.WriteLine();
+                        Console.Write("Enter to main menu...");
+                        Console.ReadKey();
+                        Console.Clear();
+                        break;
+                    case 5:
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.Write("Exiting Admin menu...");
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.ReadKey();
+                        Console.Clear();
+                        break;
+                    default:
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.Write("❌ Invalid choice. Exiting Admin menu...");
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.ReadKey();
+                        Console.Clear();
+                        break;
+                }
+            }
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Access denied!");
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.ReadKey();
+                Console.Clear();
             }
         }
 
@@ -178,6 +195,23 @@ namespace VendingMachine
                 Console.WriteLine($"Id: {transaction.PurchasedDrink.Id}; Name: {transaction.PurchasedDrink.Name}; " +
                 $"Price: {transaction.TotalSum} zł; Time: {transaction.PurchaseTime};");
                 Console.WriteLine("-------------------------------------------------------------------");
+            }
+        }
+
+        private bool CheckPassword()
+        {
+            Console.Write("Give the password: ");
+            string? inputPassword = Console.ReadLine();
+
+            Console.WriteLine();
+
+            if (inputPassword != PASSWORD) { return false; }
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine("Access allowed!");
+                Console.ForegroundColor = ConsoleColor.White;
+                return true;
             }
         }
     }
