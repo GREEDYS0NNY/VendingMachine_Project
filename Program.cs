@@ -43,7 +43,7 @@
                             Console.WriteLine();
 
                             Console.Write("Insert coin: ");
-                            _ = int.TryParse(Console.ReadLine(), out int coin);
+                            _ = decimal.TryParse(Console.ReadLine(), out decimal coin);
 
                             Console.WriteLine();
 
@@ -59,7 +59,6 @@
                                 break;
                             }
                         }
-
                         Console.WriteLine();
                         Console.WriteLine();
                         Console.ForegroundColor = ConsoleColor.Green;

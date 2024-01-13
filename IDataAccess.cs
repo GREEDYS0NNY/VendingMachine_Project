@@ -2,7 +2,7 @@
 {
     internal interface IDataAccess
     {
-        void SaveData();
-        void LoadData();
+        void ImportData();
+        void ExportData();
     }
 }
