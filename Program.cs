@@ -16,8 +16,7 @@
                 Console.WriteLine("1. Buy a drink");
                 Console.WriteLine("2. Admin menu");
                 Console.WriteLine("3. Exit");
-                Console.WriteLine();
-                Console.Write("Select operation: ");
+                Console.Write("\nSelect operation: ");
 
                 _ = int.TryParse(Console.ReadLine(), out int choice);
 
@@ -30,9 +29,7 @@
 
                         vendingMachine.ViewAvailableDrinks();
 
-                        Console.WriteLine();
-
-                        Console.Write("Choose a drink: ");
+                        Console.Write("\nChoose a drink: ");
                         _ = int.TryParse(Console.ReadLine(), out int drinkId);
 
                         decimal drinkPrice = user.SelectDrink(drinkId);
@@ -40,36 +37,27 @@
 
                         while (totalSum < drinkPrice)
                         {
-                            Console.WriteLine();
-
                             Console.Write("Insert coin: ");
                             _ = decimal.TryParse(Console.ReadLine(), out decimal coin);
 
-                            Console.WriteLine();
-
                             user.InsertCoin(coin);
                             totalSum += coin;
-                            Console.Write($" Total amount: {totalSum} zł.");
+                            Console.Write($" Total amount: {totalSum} zł.\n");
 
                             if (totalSum > drinkPrice)
                             {
-                                Console.WriteLine();
-                                Console.WriteLine();
-                                Console.WriteLine($"Take your change: {totalSum - drinkPrice} zł.");
+                                Console.WriteLine($"\nTake your change: {totalSum - drinkPrice} zł.");
                                 break;
                             }
                         }
-                        Console.WriteLine();
-                        Console.WriteLine();
                         Console.ForegroundColor = ConsoleColor.Green;
-                        Console.WriteLine("Thanks for the purchase!");
+                        Console.WriteLine("\nThanks for the purchase!");
                         Console.ForegroundColor = ConsoleColor.White;
                         Console.ReadKey();
                         Console.Clear();
                         break;
                     case 2:
                         Console.Clear();
-
                         administrator.ManageInventory();
                         break;
                     case 3:
@@ -79,9 +67,7 @@
                         Environment.Exit(0);
                         break;
                     default:
-                        Console.ForegroundColor = ConsoleColor.Red;
-                        Console.WriteLine("❌ Invalid choice. Try again.");
-                        Console.ForegroundColor = ConsoleColor.White;
+                        CustomWarnings.MainMenuChoiceWarning();
                         Console.ReadLine();
                         Console.Clear();
                         break;

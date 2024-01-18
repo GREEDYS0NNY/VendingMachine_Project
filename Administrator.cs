@@ -5,29 +5,21 @@ namespace VendingMachine
     internal class Administrator : User
     {
         private readonly VendingMachine vendingMachine;
-        private readonly string PASSWORD = "1234"; 
-        public Administrator(VendingMachine machine) : base(machine)
-        {
-            vendingMachine = machine;
-        }
+        private readonly string PASSWORD = "1234";
+        public Administrator(VendingMachine machine) : base(machine) { vendingMachine = machine; }
         
         private void AddDrink()
         {
             List<Drink> availableDrinks = vendingMachine.GetAvailableDrinks();
             List<string> drinksNames = [];
+
             foreach (Drink drink in availableDrinks) { drinksNames.Add(drink.Name); }
 
             Console.Write("Enter the name of the drink: ");
 
             string? name = Console.ReadLine();
 
-            if (name == "" || name is null || drinksNames.Contains(name))
-            {
-                Console.WriteLine();
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("❌ Name must be defined and must be unique. Canceling the operation...");
-                Console.ForegroundColor = ConsoleColor.White;
-            }
+            if (name == "" || name is null || drinksNames.Contains(name)) { CustomWarnings.NameWarning(); }
             else
             {
                 Console.Write("Enter the price of the drink: ");
@@ -46,24 +38,13 @@ namespace VendingMachine
 
                         vendingMachine.AddDrink(newDrink);
 
-                        Console.WriteLine();
-                        Console.WriteLine($"{name} has been added to the inventory.");
-                    }
-                    else
-                    {
-                        Console.WriteLine();
-                        Console.ForegroundColor = ConsoleColor.Red;
-                        Console.WriteLine("❌ Id must be greater than or equal to 1 and must be unique. Canceling the operation...");
+                        Console.ForegroundColor= ConsoleColor.Green;
+                        Console.WriteLine($"\n{name} has been added to the inventory.");
                         Console.ForegroundColor = ConsoleColor.White;
                     }
+                    else { CustomWarnings.IdWarning(); }
                 }
-                else
-                {
-                    Console.WriteLine();
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("❌ Invalid price. Canceling the operation...");
-                    Console.ForegroundColor = ConsoleColor.White;
-                }
+                else { CustomWarnings.PriceWarning(); }
             }
         }
 
@@ -75,30 +56,17 @@ namespace VendingMachine
             {
                 Drink removedDrink = vendingMachine.GetDrinkById(drinkId);
 
-                if (removedDrink.Id >= 1)
+                if (removedDrink.Id != 0)
                 {
                     vendingMachine.RemoveDrink(drinkId);
 
-                    Console.WriteLine();
                     Console.ForegroundColor = ConsoleColor.Green;
-                    Console.WriteLine($"{removedDrink.Name} has been removed from the inventory!");
+                    Console.WriteLine($"\n{removedDrink.Name} has been removed from the inventory!");
                     Console.ForegroundColor = ConsoleColor.White;
                 }
-                else
-                {
-                    Console.WriteLine();
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("❌ Invalid Id. Canceling the operation...");
-                    Console.ForegroundColor = ConsoleColor.White;
-                }
+                else { CustomWarnings.IdWarning(); }
             }
-            else
-            {
-                Console.WriteLine();
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("❌ Invalid Id. Canceling the operation...");
-                Console.ForegroundColor = ConsoleColor.White;
-            }
+            else { CustomWarnings.IdWarning(); }
         }
 
         public void ManageInventory()
@@ -117,12 +85,9 @@ namespace VendingMachine
                 Console.WriteLine("4. View Transactions");
                 Console.WriteLine("5. Delete All Transactions");
                 Console.WriteLine("6. Exit Admin menu");
-                Console.WriteLine();
-                Console.Write("Enter your choice: ");
+                Console.Write("\nEnter your choice: ");
 
                 _ = int.TryParse(Console.ReadLine(), out int choice);
-
-                Console.WriteLine();
 
                 switch (choice)
                 {
@@ -143,23 +108,20 @@ namespace VendingMachine
                     case 3:
                         Console.Clear();
                         vendingMachine.ViewAvailableDrinks();
-                        Console.WriteLine();
-                        Console.Write("Enter to main menu ");
+                        Console.Write("\nEnter to main menu ");
                         Console.ReadKey();
                         Console.Clear();
                         break;
                     case 4:
                         Console.Clear();
                         ViewTransactions();
-                        Console.WriteLine();
-                        Console.Write("Enter to main menu...");
+                        Console.Write("\nEnter to main menu...");
                         Console.ReadKey();
                         Console.Clear();
                         break;
                     case 5:
                         Console.Clear();
                         vendingMachine.DeleteAllTransactions();
-                        Console.WriteLine();
                         Console.ForegroundColor = ConsoleColor.Green;
                         Console.Write("All transactions have been deleted succesfully!");
                         Console.ForegroundColor = ConsoleColor.White;
@@ -168,15 +130,13 @@ namespace VendingMachine
                         break;
                     case 6:
                         Console.ForegroundColor = ConsoleColor.Green;
-                        Console.Write("Exiting Admin menu...");
+                        Console.Write("\nExiting Admin menu...");
                         Console.ForegroundColor = ConsoleColor.White;
                         Console.ReadKey();
                         Console.Clear();
                         break;
                     default:
-                        Console.ForegroundColor = ConsoleColor.Red;
-                        Console.Write("❌ Invalid choice. Exiting Admin menu...");
-                        Console.ForegroundColor = ConsoleColor.White;
+                        CustomWarnings.AdminMenuChoiceWarning();
                         Console.ReadKey();
                         Console.Clear();
                         break;
@@ -184,9 +144,7 @@ namespace VendingMachine
             }
             else
             {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("Access denied!");
-                Console.ForegroundColor = ConsoleColor.White;
+                CustomWarnings.AccessWarning();
                 Console.ReadKey();
                 Console.Clear();
             }
@@ -198,8 +156,7 @@ namespace VendingMachine
 
             Console.WriteLine("Transactions:");
 
-            Console.WriteLine();
-            Console.WriteLine("-------------------------------------------------------------------");
+            Console.WriteLine("\n-------------------------------------------------------------------");
 
             foreach (Transaction transaction in transactions)
             {
@@ -214,13 +171,11 @@ namespace VendingMachine
             Console.Write("Give the password: ");
             string? inputPassword = Console.ReadLine();
 
-            Console.WriteLine();
-
             if (inputPassword != PASSWORD) { return false; }
             else
             {
                 Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine("Access allowed!");
+                Console.WriteLine("\nAccess allowed!");
                 Console.ForegroundColor = ConsoleColor.White;
                 return true;
             }

@@ -4,19 +4,12 @@
     {
         private readonly VendingMachine vendingMachine;
 
-        public User(VendingMachine machine)
-        {
-            vendingMachine = machine;
-        }
+        public User(VendingMachine machine) { vendingMachine = machine; }
 
         public void InsertCoin(decimal coin)
         {
-            if (coin >= 0.00m)
-            {
-                Console.Write($"Inserted {coin} zł.");
-            }
-            else
-                Console.WriteLine("Invalid coin amount. Please insert a valid coin.");
+            if (coin >= 0.00m) { Console.Write($"\nInserted {coin} zł."); }
+            else { Console.WriteLine("\nInvalid coin amount. Please insert a valid coin."); }
         }
 
         public decimal SelectDrink(int drinkId)
@@ -33,13 +26,10 @@
                 };
                 vendingMachine.AddTransaction(transaction);
 
-                Console.WriteLine();
-                Console.WriteLine($"Waiting for the payment: {selectedDrink.Price} zł");
+                Console.WriteLine($"\nWaiting for the payment: {selectedDrink.Price} zł");
                 return selectedDrink.Price;
             }
-            else
-                Console.WriteLine();
-                Console.WriteLine("Invalid drink selection. Please choose a valid drink.");
+            else { Console.WriteLine("\nInvalid drink selection. Please choose a valid drink."); }
             return 0;
         }
     }
