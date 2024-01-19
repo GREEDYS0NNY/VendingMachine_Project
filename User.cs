@@ -8,16 +8,38 @@
 
         public void InsertCoin(decimal coin)
         {
-            if (coin >= 0.00m) { Console.Write($"\nInserted {coin} zł."); }
-            else { Console.WriteLine("\nInvalid coin amount. Please insert a valid coin."); }
+            if (coin >= 0.00m) { Console.Write($"\nWstawiono {coin} zł."); }
+            else { CustomWarnings.CoinTypeWarning(); }
         }
-
-        public decimal SelectDrink(int drinkId)
+        
+        public void BuyDrink()
         {
+            Console.Write("\nPodaj Id napoju: ");
+            _ = int.TryParse(Console.ReadLine(), out int drinkId);
+
             Drink selectedDrink = vendingMachine.GetDrinkById(drinkId);
 
-            if (selectedDrink != null)
+            if (selectedDrink.Id != 0)
             {
+                decimal drinkPrice = selectedDrink.Price;
+                decimal totalSum = 0;
+
+                Console.WriteLine($"\nOczekiwanie na płatność: {drinkPrice} zł");
+
+                while (totalSum < drinkPrice)
+                {
+                    Console.Write("\nWstaw monetę: ");
+
+                    if (decimal.TryParse(Console.ReadLine(), out decimal coin) & coin > 0)
+                    {
+                        InsertCoin(coin);
+                        totalSum += coin;
+                        Console.Write($" Wprowadzona kwota: {totalSum} zł.\n");
+                    }
+                    else { InsertCoin(-1); }
+                }
+                if (totalSum - drinkPrice != 0.00m) { Console.WriteLine($"\nWeź swoją resztę: {totalSum - drinkPrice} zł."); }
+
                 Transaction transaction = new()
                 {
                     PurchasedDrink = selectedDrink,
@@ -25,12 +47,12 @@
                     PurchaseTime = DateTime.Now
                 };
                 vendingMachine.AddTransaction(transaction);
-
-                Console.WriteLine($"\nWaiting for the payment: {selectedDrink.Price} zł");
-                return selectedDrink.Price;
             }
-            else { Console.WriteLine("\nInvalid drink selection. Please choose a valid drink."); }
-            return 0;
+            else 
+            { 
+                CustomWarnings.DrinkChoiceWarning();
+                BuyDrink();
+            }
         }
     }
 }

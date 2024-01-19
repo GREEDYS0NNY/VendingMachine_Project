@@ -80,7 +80,7 @@ namespace VendingMachine
         {
             List<Drink> availableDrinks = GetAvailableDrinks();
 
-            Console.WriteLine("Available Drinks:");
+            Console.WriteLine("Dostępne napoje:");
 
             for (int i = 0; i < availableDrinks.Count; i++)
             {
@@ -105,7 +105,7 @@ namespace VendingMachine
                     Drink drink = new()
                     {
                         Id = Convert.ToInt32(reader["Id"]),
-                        Name = reader["Name"].ToString(),
+                        Name = reader["Name"].ToString(), // nigdy nie otrzyma wartości NULL, ponieważ kolumna Name w bazie danych jest oznaczona jako NOT NULL
                         Price = Convert.ToDecimal(reader["Price"])
                     };
                     availableDrinks.Add(drink);
@@ -156,7 +156,7 @@ namespace VendingMachine
                 return new Drink
                 {
                     Id = Convert.ToInt32(reader["Id"]),
-                    Name = reader["Name"].ToString(),
+                    Name = reader["Name"].ToString(), // nigdy nie otrzyma wartości NULL, ponieważ kolumna Name w bazie danych jest oznaczona jako NOT NULL
                     Price = Convert.ToDecimal(reader["Price"])
                 };
             }
