@@ -38,7 +38,7 @@
                         break;
                     case 2:
                         Console.Clear();
-                        administrator.ManageInventory();
+                        administrator.AccessToAdminMenu();
                         break;
                     case 3:
                         Console.ForegroundColor = ConsoleColor.Green;

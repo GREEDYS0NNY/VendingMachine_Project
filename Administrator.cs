@@ -113,89 +113,92 @@ namespace VendingMachine
             else { CustomWarnings.IdWarning(); }
         }
 
-        public void ManageInventory()
+        public void AccessToAdminMenu()
         {
             bool isAllowed = CheckPassword();
 
-            if (isAllowed)
+            if (isAllowed) { ManageInventory(); }
+            else { Console.ReadKey(); Console.Clear(); }
+        }
+
+        private void ManageInventory()
+        {
+            Console.Clear();
+
+            Console.WriteLine("Menu administracyjne:");
+            Console.WriteLine("1. Dodać napój");
+            Console.WriteLine("2. Usunąć napój");
+            Console.WriteLine("3. Aktualizacja informacji o napoju");
+            Console.WriteLine("4. Wyświetlić listę dostępnych napojów");
+            Console.WriteLine("5. Wyświetlić listę transakcji");
+            Console.WriteLine("6. Usunięcie wszystkich transakcji");
+            Console.WriteLine("7. Wyjdź z menu administracyjnego");
+            Console.Write("\nWybierz operację: ");
+
+            _ = int.TryParse(Console.ReadLine(), out int choice);
+
+            switch (choice)
             {
-                Console.ReadKey();
-                Console.Clear();
-
-                Console.WriteLine("Menu administracyjne:");
-                Console.WriteLine("1. Dodać napój");
-                Console.WriteLine("2. Usunąć napój");
-                Console.WriteLine("3. Aktualizacja informacji o napoju");
-                Console.WriteLine("4. Wyświetlić listę dostępnych napojów");
-                Console.WriteLine("5. Wyświetlić listę transakcji");
-                Console.WriteLine("6. Usunięcie wszystkich transakcji");
-                Console.WriteLine("7. Wyjdź z menu administracyjnego");
-                Console.Write("\nWybierz operację: ");
-
-                _ = int.TryParse(Console.ReadLine(), out int choice);
-
-                switch (choice)
-                {
-                    case 1:
-                        Console.Clear();
-                        AddDrink();
-                        Console.ReadKey();
-                        Console.Clear();
-                        break;
-                    case 2:
-                        Console.Clear();
-                        RemoveDrink();
-                        Console.ReadKey();
-                        Console.Clear();
-                        break;
-                    case 3:
-                        Console.Clear();
-                        UpdateDrinkInfo();
-                        Console.ReadKey();
-                        Console.Clear();
-                        break;
-                    case 4:
-                        Console.Clear();
-                        vendingMachine.ViewAvailableDrinks();
-                        Console.Write("\nNaciśnij Enter, aby wyjść do menu głównego");
-                        Console.ReadKey();
-                        Console.Clear();
-                        break;
-                    case 5:
-                        Console.Clear();
-                        ViewTransactions();
-                        Console.Write("\nNaciśnij Enter, aby wyjść do menu głównego");
-                        Console.ReadKey();
-                        Console.Clear();
-                        break;
-                    case 6:
-                        Console.Clear();
-                        vendingMachine.DeleteAllTransactions();
-                        Console.ForegroundColor = ConsoleColor.Green;
-                        Console.Write("Wszystkie transakcje zostały pomyślnie usunięte!");
-                        Console.Write("\nWyjście z menu administracyjnego...");
-                        Console.ForegroundColor = ConsoleColor.White;
-                        Console.ReadKey();
-                        Console.Clear();
-                        break;
-                    case 7:
-                        Console.ForegroundColor = ConsoleColor.Green;
-                        Console.Write("\nWyjście z menu administracyjnego...");
-                        Console.ForegroundColor = ConsoleColor.White;
-                        Console.ReadKey();
-                        Console.Clear();
-                        break;
-                    default:
-                        CustomWarnings.AdminMenuChoiceWarning();
-                        Console.ReadKey();
-                        Console.Clear();
-                        break;
-                }
-            }
-            else
-            {
-                Console.ReadKey();
-                Console.Clear();
+                case 1:
+                    Console.Clear();
+                    AddDrink();
+                    Console.ReadKey();
+                    Console.Clear();
+                    ManageInventory();
+                    break;
+                case 2:
+                    Console.Clear();
+                    RemoveDrink();
+                    Console.ReadKey();
+                    Console.Clear();
+                    ManageInventory();
+                    break;
+                case 3:
+                    Console.Clear();
+                    UpdateDrinkInfo();
+                    Console.ReadKey();
+                    Console.Clear();
+                    ManageInventory();
+                    break;
+                case 4:
+                    Console.Clear();
+                    vendingMachine.ViewAvailableDrinks();
+                    Console.Write("\nNaciśnij Enter, aby wyjść do menu administracyjnego");
+                    Console.ReadKey();
+                    Console.Clear();
+                    ManageInventory();
+                    break;
+                case 5:
+                    Console.Clear();
+                    ViewTransactions();
+                    Console.Write("\nNaciśnij Enter, aby wyjść do menu administracyjnego");
+                    Console.ReadKey();
+                    Console.Clear();
+                    ManageInventory();
+                    break;
+                case 6:
+                    Console.Clear();
+                    vendingMachine.DeleteAllTransactions();
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine("Wszystkie transakcje zostały pomyślnie usunięte!");
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.Write("\nNaciśnij Enter, aby wyjść do menu administracyjnego");
+                    Console.ReadKey();
+                    Console.Clear();
+                    ManageInventory();
+                    break;
+                case 7:
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.Write("\nWyjście z menu administracyjnego...");
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.ReadKey();
+                    Console.Clear();
+                    break;
+                default:
+                    CustomWarnings.AdminMenuChoiceWarning();
+                    Console.ReadKey();
+                    Console.Clear();
+                    break;
             }
         }
 
@@ -230,6 +233,7 @@ namespace VendingMachine
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine("\nDostęp przyznany!");
                 Console.ForegroundColor = ConsoleColor.White;
+                Console.ReadKey();
                 return true;
             }
         }
