@@ -5,16 +5,16 @@ Zmienna ta znajduje się w klasie VendingMachine.cs w 7 wierszu.
 Należy również utworzyć dwie tabele dla bazy danych. Kod do ich utworzenia znajduje się poniżej.
 
 Tabela Drinks:
-
+```
 CREATE TABLE Drinks
 (
 	Id INT PRIMARY KEY,
 	Name NVARCHAR(100) UNIQUE NOT NULL,
 	Price DECIMAL(10, 2) NOT NULL
 );
-
+```
 Tabela Transactions:
-
+```
 CREATE TABLE Transactions
 (
 	Id INT PRIMARY KEY IDENTITY,
@@ -22,3 +22,4 @@ CREATE TABLE Transactions
 	TotalSum DECIMAL(10, 2) NOT NULL,
 	PurchaseTime DATETIME NOT NULL,
 );
+```
