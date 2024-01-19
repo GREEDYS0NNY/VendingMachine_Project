@@ -21,6 +21,22 @@ namespace VendingMachine
             command.ExecuteNonQuery();
         }
 
+        public void UpdateDrinkInfo(int updatedDrinkId, Drink drink)
+        {
+            using SqlConnection connection = new(connectionString);
+            connection.Open();
+
+            string updateQuery = "UPDATE Drinks SET Id = @Id, Name = @Name, Price = @Price WHERE Id = @updatedDrinkId";
+
+            using SqlCommand command = new(updateQuery, connection);
+            command.Parameters.AddWithValue("@Id", drink.Id);
+            command.Parameters.AddWithValue("@Name", drink.Name);
+            command.Parameters.AddWithValue("@Price", drink.Price);
+            command.Parameters.AddWithValue("@updatedDrinkId", updatedDrinkId);
+
+            command.ExecuteNonQuery();
+        }
+
         public void RemoveDrink(int drinkId)
         {
             using SqlConnection connection = new(connectionString);
