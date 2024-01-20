@@ -2,5 +2,6 @@
 {
     internal class Juice : Drink
     {
+
     }
 }

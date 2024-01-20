@@ -31,7 +31,7 @@
                         user.BuyDrink();
 
                         Console.ForegroundColor = ConsoleColor.Green;
-                        Console.WriteLine("\nDziękujemy za zakup!");
+                        Console.Write("\nDziękujemy za zakup!");
                         Console.ForegroundColor = ConsoleColor.White;
                         Console.ReadKey();
                         Console.Clear();

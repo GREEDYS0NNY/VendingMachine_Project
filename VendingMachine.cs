@@ -1,5 +1,6 @@
 ﻿using System.Data.SqlClient;
 using System.Globalization;
+using System.Xml.Linq;
 using IronXL;
 
 namespace VendingMachine
@@ -49,9 +50,48 @@ namespace VendingMachine
                     command.ExecuteNonQuery();
                 }
             }
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.Write("\nDane zostały pomyślnie zaimportowane do bazy danych!");
+            Console.ForegroundColor = ConsoleColor.White;
         }
 
-        public void ExportData(string fileName) { }
+        public void ExportData(string fileName) 
+        {
+            List<Drink> drinks = GetAvailableDrinks();
+
+            string pathToFile = $"{Directory.GetCurrentDirectory()}\\{fileName}";
+
+            if (fileName.Contains(".csv"))
+            {
+                using StreamWriter writer = new(pathToFile);
+
+                foreach (Drink drink in drinks)
+                {
+                    string formattedPrice = drink.Price.ToString(CultureInfo.InvariantCulture);
+                    writer.WriteLine($"{drink.Id},{drink.Name},{formattedPrice}");
+                }
+            }
+            else
+            {
+                WorkBook workBook = WorkBook.Create(ExcelFileFormat.XLSX);
+                WorkSheet workSheet = workBook.DefaultWorkSheet;
+
+                workSheet["A1"].Value = "Id";
+                workSheet["B1"].Value = "Name";
+                workSheet["C1"].Value = "Price";
+
+                for (int i = 0; i < drinks.Count; i++)
+                {
+                    workSheet[$"A{i + 1}"].Value = drinks[i].Id;
+                    workSheet[$"B{i + 1}"].Value = drinks[i].Name;
+                    workSheet[$"C{i + 1}"].Value = drinks[i].Price;
+                }
+                workBook.SaveAs(pathToFile);
+            }
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.Write("\nDane zostały pomyślnie deportowane do pliku!");
+            Console.ForegroundColor = ConsoleColor.White;
+        }
 
         public void AddDrink(Drink drink)
         {
@@ -66,6 +106,10 @@ namespace VendingMachine
             command.Parameters.AddWithValue("@Price", drink.Price);
 
             command.ExecuteNonQuery();
+
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.Write($"\nNapój został dodany do asortymentu!");
+            Console.ForegroundColor = ConsoleColor.White;
         }
 
         public void UpdateDrinkInfo(int updatedDrinkId, Drink drink)
@@ -82,6 +126,10 @@ namespace VendingMachine
             command.Parameters.AddWithValue("@updatedDrinkId", updatedDrinkId);
 
             command.ExecuteNonQuery();
+
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.Write("\nInformacje o napoju zostały pomyślnie zaktualizowane!");
+            Console.ForegroundColor = ConsoleColor.White;
         }
 
         public void RemoveDrink(int drinkId)
@@ -95,6 +143,10 @@ namespace VendingMachine
             command.Parameters.AddWithValue("@drinkId", drinkId);
 
             command.ExecuteNonQuery();
+
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.Write($"\nNapój został usunięty z asortymentu!");
+            Console.ForegroundColor = ConsoleColor.White;
         }
 
         public void RemoveAllDrinks()
@@ -132,6 +184,10 @@ namespace VendingMachine
 
             using SqlCommand command = new(deleteQuery, connection);
             command.ExecuteNonQuery();
+
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("Wszystkie transakcje zostały pomyślnie usunięte!");
+            Console.ForegroundColor = ConsoleColor.White;
         }
 
         public void ViewAvailableDrinks()

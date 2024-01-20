@@ -2,11 +2,11 @@
 
 namespace VendingMachine
 {
-    internal class Administrator : User
+    internal class Administrator : CustomWarnings
     {
         private readonly VendingMachine vendingMachine;
         private readonly string PASSWORD = "1234";
-        public Administrator(VendingMachine machine) : base(machine) { vendingMachine = machine; }
+        public Administrator(VendingMachine machine) { vendingMachine = machine; }
         
         private void ImportData()
         {
@@ -26,33 +26,48 @@ namespace VendingMachine
                         Console.Write("\nUkaż nazwę pliku wraz z rozszerzeniem (np. file.xlsx/xls/csv): ");
                         string? fileName = Console.ReadLine();
 
-                        vendingMachine.ImportData(fileName);
-
                         if (fileName is not null)
                         {
                             try
                             {
-                                
-                                Console.ForegroundColor = ConsoleColor.Green;
-                                Console.WriteLine("\nDane zostały pomyślnie zaimportowane do bazy danych!");
-                                Console.ForegroundColor = ConsoleColor.White;
+                                vendingMachine.ImportData(fileName);
                             }
                             catch (Exception)
                             {
-                                CustomWarnings.FailedImportWarning();
+                                FailedImportExportWarning();
                             }
                         }
-                        else { CustomWarnings.NullWarning(); }
+                        else { NullWarning(); }
                         break;
                     case "nie":
                         Console.WriteLine("\nNaciśnij Enter, aby wyjść do menu administracyjnego.");
                         break;
                     default:
-                        CustomWarnings.ChoiceWarning();
+                        ChoiceWarning();
                         break;
                 }
             }
-            else { CustomWarnings.NullWarning(); }
+            else { NullWarning(); }
+        }
+
+        private void ExportData()
+        {
+            Console.Write("Podaj nazwę pliku (np. file.xlsx/xls/csv): ");
+
+            string? fileName = Console.ReadLine();
+
+            if (fileName is not null)
+            {
+                try
+                {
+                    vendingMachine.ExportData(fileName);
+                }
+                catch (Exception)
+                {
+                    FailedImportExportWarning();
+                }
+            }
+            else { NullWarning(); }
         }
 
         private void AddDrink()
@@ -62,11 +77,15 @@ namespace VendingMachine
 
             foreach (Drink drink in availableDrinks) { drinksNames.Add(drink.Name); }
 
+            Console.Write("Wprowadź typ napoju (Water, Juice, Soda): ");
+
+            string? drinkType = Console.ReadLine();
+
             Console.Write("Wprowadź nazwę napoju: ");
 
             string? name = Console.ReadLine();
 
-            if (name == "" || name is null || drinksNames.Contains(name)) { CustomWarnings.NameWarning(); }
+            if (name == "" || name is null || drinksNames.Contains(name)) { NameWarning(); }
             else
             {
                 Console.Write("Wprowadź cenę napoju: ");
@@ -81,17 +100,32 @@ namespace VendingMachine
 
                     if (existingDrink.Id != drinkId && drinkId >= 1)
                     {
-                        Drink newDrink = new() { Id = drinkId, Name = name, Price = price };
-
-                        vendingMachine.AddDrink(newDrink);
-
-                        Console.ForegroundColor= ConsoleColor.Green;
-                        Console.WriteLine($"\nNapój {name} został dodany do asortymentu.");
-                        Console.ForegroundColor = ConsoleColor.White;
+                        if (drinkType is not null)
+                        {
+                            switch (drinkType.ToLower())
+                            {
+                                case "water":
+                                    Water water = new() { Id = drinkId, Name = name, Price = price };
+                                    vendingMachine.AddDrink(water);
+                                    break;
+                                case "juice":
+                                    Juice juice = new() { Id = drinkId, Name = name, Price = price };
+                                    vendingMachine.AddDrink(juice);
+                                    break;
+                                case "soda":
+                                    Soda soda = new() { Id = drinkId, Name = name, Price = price };
+                                    vendingMachine.AddDrink(soda);
+                                    break;
+                                default:
+                                    WrongDrinkType();
+                                    break;
+                            }
+                        }
+                        else { NullWarning(); }
                     }
-                    else { CustomWarnings.IdWarning(); }
+                    else { IdWarning(); }
                 }
-                else { CustomWarnings.PriceWarning(); }
+                else { PriceWarning(); }
             }
         }
 
@@ -107,14 +141,10 @@ namespace VendingMachine
                 if (removedDrink.Id != 0)
                 {
                     vendingMachine.RemoveDrink(drinkId);
-
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    Console.WriteLine($"\nNapój {removedDrink.Name} został usunięty z asortymentu!");
-                    Console.ForegroundColor = ConsoleColor.White;
                 }
-                else { CustomWarnings.IdWarning(); }
+                else { IdWarning(); }
             }
-            else { CustomWarnings.IdWarning(); }
+            else { IdWarning(); }
         }
 
         private void UpdateDrinkInfo()
@@ -144,20 +174,16 @@ namespace VendingMachine
                             {
                                 Drink newDrink = new() { Id = newId, Name = newName, Price = newPrice };
                                 vendingMachine.UpdateDrinkInfo(updatedDrinkId, newDrink);
-
-                                Console.ForegroundColor = ConsoleColor.Green;
-                                Console.WriteLine("\nInformacje o napoju zostały pomyślnie zaktualizowane!");
-                                Console.ForegroundColor = ConsoleColor.White;
                             }
-                            else { CustomWarnings.IdWarning(); }
+                            else { IdWarning(); }
                         }
-                        else { CustomWarnings.PriceWarning(); }
+                        else { PriceWarning(); }
                     }
-                    else { CustomWarnings.NameWarning(); }
+                    else { NameWarning(); }
                 }
-                else { CustomWarnings.IdWarning(); }
+                else { IdWarning(); }
             }
-            else { CustomWarnings.IdWarning(); }
+            else { IdWarning(); }
         }
 
         public void AccessToAdminMenu()
@@ -180,7 +206,7 @@ namespace VendingMachine
             Console.WriteLine("5. Wyświetlić listę transakcji");
             Console.WriteLine("6. Usunięcie wszystkich transakcji");
             Console.WriteLine("7. Importowanie danych");
-            Console.WriteLine("8. Exportowanie danych");
+            Console.WriteLine("8. Eksportowanie danych");
             Console.WriteLine("9. Wyjdź z menu administracyjnego");
             Console.Write("\nWybierz operację: ");
 
@@ -212,7 +238,7 @@ namespace VendingMachine
                 case 4:
                     Console.Clear();
                     vendingMachine.ViewAvailableDrinks();
-                    Console.Write("\nNaciśnij Enter, aby wyjść do menu administracyjnego");
+                    Console.Write("\nNaciśnij Enter, aby wyjść do menu administracyjnego.");
                     Console.ReadKey();
                     Console.Clear();
                     ManageInventory();
@@ -220,7 +246,7 @@ namespace VendingMachine
                 case 5:
                     Console.Clear();
                     ViewTransactions();
-                    Console.Write("\nNaciśnij Enter, aby wyjść do menu administracyjnego");
+                    Console.Write("\nNaciśnij Enter, aby wyjść do menu administracyjnego.");
                     Console.ReadKey();
                     Console.Clear();
                     ManageInventory();
@@ -228,10 +254,7 @@ namespace VendingMachine
                 case 6:
                     Console.Clear();
                     vendingMachine.DeleteAllTransactions();
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    Console.WriteLine("Wszystkie transakcje zostały pomyślnie usunięte!");
-                    Console.ForegroundColor = ConsoleColor.White;
-                    Console.Write("\nNaciśnij Enter, aby wyjść do menu administracyjnego");
+                    Console.Write("\nNaciśnij Enter, aby wyjść do menu administracyjnego.");
                     Console.ReadKey();
                     Console.Clear();
                     ManageInventory();
@@ -244,6 +267,11 @@ namespace VendingMachine
                     ManageInventory();
                     break;
                 case 8:
+                    Console.Clear();
+                    ExportData();
+                    Console.ReadKey();
+                    Console.Clear();
+                    ManageInventory();
                     break;
                 case 9:
                     Console.ForegroundColor = ConsoleColor.Green;
@@ -253,7 +281,7 @@ namespace VendingMachine
                     Console.Clear();
                     break;
                 default:
-                    CustomWarnings.AdminMenuChoiceWarning();
+                    AdminMenuChoiceWarning();
                     Console.ReadKey();
                     Console.Clear();
                     break;
@@ -283,7 +311,7 @@ namespace VendingMachine
 
             if (inputPassword != PASSWORD) 
             {
-                CustomWarnings.AccessWarning();
+                AccessWarning();
                 return false; 
             }
             else

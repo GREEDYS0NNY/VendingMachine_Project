@@ -59,10 +59,10 @@ namespace VendingMachine
             Console.ForegroundColor = ConsoleColor.White;
         }
 
-        public static void FailedImportWarning()
+        public static void FailedImportExportWarning()
         {
             Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine($"\nWystąpił błąd podczas importowania danych! Sprawdź, czy wprowadziłeś poprawną nazwę pliku.");
+            Console.WriteLine($"\nWystąpił błąd podczas importowania/deportowania danych! Sprawdź, czy wprowadziłeś poprawną nazwę pliku.");
             Console.WriteLine($"Lub upewnij się, że dane w pliku są prawidłowe.");
             Console.Write("\nAnulowanie operacji...");
             Console.ForegroundColor = ConsoleColor.White;
@@ -72,6 +72,13 @@ namespace VendingMachine
         {
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("\nPole nie może zawierać wartości NULL!");
+            Console.ForegroundColor = ConsoleColor.White;
+        }
+
+        public static void WrongDrinkType()
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("\nNiewłaściwy rodzaj napoju! Napój musi być jednym z następujących rodzajów: Water, Juice, Soda.");
             Console.ForegroundColor = ConsoleColor.White;
         }
     }
