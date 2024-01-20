@@ -81,5 +81,14 @@ namespace VendingMachine
             Console.WriteLine("\nNiewłaściwy rodzaj napoju! Napój musi być jednym z następujących rodzajów: Water, Juice, Soda.");
             Console.ForegroundColor = ConsoleColor.White;
         }
+
+        public static void WrongCoinDenomination()
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("\nNieprawidłowy nominał monety!");
+            Console.WriteLine("Moneta musi odpowiadać następującym nominałom: {0,01; 0,02; 0,05; 0,10; 0,20; 0,50; 1,00; 2; 5} zł.");
+            Console.WriteLine("Grosze muszą zawierać dwie cyfry po przecinku.");
+            Console.ForegroundColor = ConsoleColor.White;
+        }
     }
 }

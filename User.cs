@@ -32,9 +32,13 @@
 
                     if (decimal.TryParse(Console.ReadLine(), out decimal coin) & coin > 0)
                     {
-                        InsertCoin(coin);
-                        totalSum += coin;
-                        Console.Write($" Wprowadzona kwota: {totalSum} zł.\n");
+                        if (CheckCoinDenomination(coin))
+                        {
+                            InsertCoin(coin);
+                            totalSum += coin;
+                            Console.Write($" Wprowadzona kwota: {totalSum} zł.\n");
+                        }
+                        else { CustomWarnings.WrongCoinDenomination(); }
                     }
                     else { InsertCoin(-1); }
                 }
@@ -53,6 +57,15 @@
                 CustomWarnings.DrinkChoiceWarning();
                 BuyDrink();
             }
+        }
+
+        private bool CheckCoinDenomination(decimal coin)
+        {
+            string[] validCoins = ["0,01", "0,02", "0,05", "0,10", "0,20", "0,50", "1,00", "2", "5"];
+            string stringCoin = coin.ToString();
+
+            if (validCoins.Contains(stringCoin)) { return true; }
+            else { return false; }
         }
     }
 }
