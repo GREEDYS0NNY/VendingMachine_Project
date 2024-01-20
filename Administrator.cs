@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace VendingMachine
+﻿namespace VendingMachine
 {
     internal class Administrator : CustomWarnings
     {
@@ -172,8 +170,15 @@ namespace VendingMachine
 
                             if (int.TryParse(Console.ReadLine(), out int newId))
                             {
-                                Drink newDrink = new() { Id = newId, Name = newName, Price = newPrice };
-                                vendingMachine.UpdateDrinkInfo(updatedDrinkId, newDrink);
+                                try
+                                {
+                                    Drink newDrink = new() { Id = newId, Name = newName, Price = newPrice };
+                                    vendingMachine.UpdateDrinkInfo(updatedDrinkId, newDrink);
+                                }
+                                catch (Exception)
+                                {
+                                    NameWarning();
+                                }
                             }
                             else { IdWarning(); }
                         }

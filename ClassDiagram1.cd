@@ -1,16 +1,25 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="VendingMachine.Administrator">
-    <Position X="8.75" Y="0.5" Width="1.75" />
+    <Position X="10.75" Y="0.5" Width="1.75" />
+    <InheritanceLine Type="VendingMachine.CustomWarnings" ManuallyRouted="true" FixedFromPoint="true">
+      <Path>
+        <Point X="4.75" Y="6.125" />
+        <Point X="4.84" Y="6.125" />
+        <Point X="4.84" Y="6.125" />
+        <Point X="11.625" Y="6.125" />
+        <Point X="11.625" Y="4.108" />
+      </Path>
+    </InheritanceLine>
     <TypeIdentifier>
       <HashCode>AAQBAAAAAABBAAASAgAIAAAAAAAIAAAAAAAgAIAAAAA=</HashCode>
       <FileName>Administrator.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="VendingMachine.CustomWarnings">
-    <Position X="6.25" Y="2.5" Width="2.25" />
+    <Position X="2.5" Y="3.75" Width="2.25" />
     <TypeIdentifier>
-      <HashCode>QAACAAQAAAACCgAAEAAAAAAwAAAAAAEAAAAAAAAAAAA=</HashCode>
+      <HashCode>QAACAAQAACACCgAAEAAAAAAwAAAAAAEAAAAAAAAAAAA=</HashCode>
       <FileName>CustomWarnings.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -57,7 +66,7 @@
     </TypeIdentifier>
   </Class>
   <Class Name="VendingMachine.VendingMachine">
-    <Position X="10.75" Y="0.5" Width="1.75" />
+    <Position X="8.5" Y="0.5" Width="1.75" />
     <TypeIdentifier>
       <HashCode>BAAJAAAAAABAEAgABAAIAAAAAAgIAgAAAAAgAAIAAAA=</HashCode>
       <FileName>VendingMachine.cs</FileName>
@@ -69,6 +78,13 @@
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Water.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="VendingMachine.SuccessfulCompletionMessages">
+    <Position X="5.25" Y="3.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAABAAAAAAAAAAEAAAAAAgAAAEAAIAAAACAAAAAAA=</HashCode>
+      <FileName>SuccessfulCompletionMessages.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Interface Name="VendingMachine.IDataAccess">

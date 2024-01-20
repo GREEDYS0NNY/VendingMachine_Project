@@ -1,11 +1,10 @@
 ﻿using System.Data.SqlClient;
 using System.Globalization;
-using System.Xml.Linq;
 using IronXL;
 
 namespace VendingMachine
 {
-    internal class VendingMachine : IDataAccess
+    internal class VendingMachine : SuccessfulCompletionMessages, IDataAccess
     {
         private readonly string connectionString = @"Data Source=GREED;Initial Catalog=VendingMachine;Integrated Security=True;";
 
@@ -50,9 +49,7 @@ namespace VendingMachine
                     command.ExecuteNonQuery();
                 }
             }
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.Write("\nDane zostały pomyślnie zaimportowane do bazy danych!");
-            Console.ForegroundColor = ConsoleColor.White;
+            SuccessfullImportMessage();
         }
 
         public void ExportData(string fileName) 
@@ -76,10 +73,6 @@ namespace VendingMachine
                 WorkBook workBook = WorkBook.Create(ExcelFileFormat.XLSX);
                 WorkSheet workSheet = workBook.DefaultWorkSheet;
 
-                workSheet["A1"].Value = "Id";
-                workSheet["B1"].Value = "Name";
-                workSheet["C1"].Value = "Price";
-
                 for (int i = 0; i < drinks.Count; i++)
                 {
                     workSheet[$"A{i + 1}"].Value = drinks[i].Id;
@@ -88,9 +81,7 @@ namespace VendingMachine
                 }
                 workBook.SaveAs(pathToFile);
             }
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.Write("\nDane zostały pomyślnie deportowane do pliku!");
-            Console.ForegroundColor = ConsoleColor.White;
+            SuccessfullExportMessage();
         }
 
         public void AddDrink(Drink drink)
@@ -107,9 +98,7 @@ namespace VendingMachine
 
             command.ExecuteNonQuery();
 
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.Write($"\nNapój został dodany do asortymentu!");
-            Console.ForegroundColor = ConsoleColor.White;
+            SuccessfullDrinkAddition();
         }
 
         public void UpdateDrinkInfo(int updatedDrinkId, Drink drink)
@@ -127,9 +116,7 @@ namespace VendingMachine
 
             command.ExecuteNonQuery();
 
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.Write("\nInformacje o napoju zostały pomyślnie zaktualizowane!");
-            Console.ForegroundColor = ConsoleColor.White;
+            SuccessfullDrinkUpdate();
         }
 
         public void RemoveDrink(int drinkId)
@@ -144,9 +131,7 @@ namespace VendingMachine
 
             command.ExecuteNonQuery();
 
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.Write($"\nNapój został usunięty z asortymentu!");
-            Console.ForegroundColor = ConsoleColor.White;
+            SuccessfullDrinkRemoval();
         }
 
         public void RemoveAllDrinks()
@@ -185,9 +170,7 @@ namespace VendingMachine
             using SqlCommand command = new(deleteQuery, connection);
             command.ExecuteNonQuery();
 
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine("Wszystkie transakcje zostały pomyślnie usunięte!");
-            Console.ForegroundColor = ConsoleColor.White;
+            SuccessfullTransactionsRemoval();
         }
 
         public void ViewAvailableDrinks()
