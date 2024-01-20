@@ -31,7 +31,7 @@ namespace VendingMachine
             Console.ForegroundColor = ConsoleColor.White;
         }
 
-        public static void MainMenuChoiceWarning()
+        public static void ChoiceWarning()
         {
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("❌ Nieprawidłowy numer operacji. Spróbuj ponownie.");
@@ -56,6 +56,22 @@ namespace VendingMachine
         {
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("\nNieprawidłowy wybór napoju. Wybierz prawidłowy napój.");
+            Console.ForegroundColor = ConsoleColor.White;
+        }
+
+        public static void FailedImportWarning()
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine($"\nWystąpił błąd podczas importowania danych! Sprawdź, czy wprowadziłeś poprawną nazwę pliku.");
+            Console.WriteLine($"Lub upewnij się, że dane w pliku są prawidłowe.");
+            Console.Write("\nAnulowanie operacji...");
+            Console.ForegroundColor = ConsoleColor.White;
+        }
+
+        public static void NullWarning()
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("\nPole nie może zawierać wartości NULL!");
             Console.ForegroundColor = ConsoleColor.White;
         }
     }

@@ -2,7 +2,7 @@
 {
     internal interface IDataAccess
     {
-        void ImportData();
-        void ExportData();
+        void ImportData(string fileName); // import from csv, xls
+        void ExportData(string fileName); // export to csv, xls
     }
 }

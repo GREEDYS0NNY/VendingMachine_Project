@@ -8,6 +8,53 @@ namespace VendingMachine
         private readonly string PASSWORD = "1234";
         public Administrator(VendingMachine machine) : base(machine) { vendingMachine = machine; }
         
+        private void ImportData()
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("Przed importowaniem danych cały asortyment napojów zostanie wyczyszczony!");
+            Console.ForegroundColor = ConsoleColor.White;
+
+            Console.Write("\nCzy chcesz kontynuować operację? Tak/Nie: ");
+
+            string? choice = Console.ReadLine();
+
+            if (choice is not null)
+            {
+                switch (choice.ToLower())
+                {
+                    case "tak":
+                        Console.Write("\nUkaż nazwę pliku wraz z rozszerzeniem (np. file.xlsx/xls/csv): ");
+                        string? fileName = Console.ReadLine();
+
+                        vendingMachine.ImportData(fileName);
+
+                        if (fileName is not null)
+                        {
+                            try
+                            {
+                                
+                                Console.ForegroundColor = ConsoleColor.Green;
+                                Console.WriteLine("\nDane zostały pomyślnie zaimportowane do bazy danych!");
+                                Console.ForegroundColor = ConsoleColor.White;
+                            }
+                            catch (Exception)
+                            {
+                                CustomWarnings.FailedImportWarning();
+                            }
+                        }
+                        else { CustomWarnings.NullWarning(); }
+                        break;
+                    case "nie":
+                        Console.WriteLine("\nNaciśnij Enter, aby wyjść do menu administracyjnego.");
+                        break;
+                    default:
+                        CustomWarnings.ChoiceWarning();
+                        break;
+                }
+            }
+            else { CustomWarnings.NullWarning(); }
+        }
+
         private void AddDrink()
         {
             List<Drink> availableDrinks = vendingMachine.GetAvailableDrinks();
@@ -132,7 +179,9 @@ namespace VendingMachine
             Console.WriteLine("4. Wyświetlić listę dostępnych napojów");
             Console.WriteLine("5. Wyświetlić listę transakcji");
             Console.WriteLine("6. Usunięcie wszystkich transakcji");
-            Console.WriteLine("7. Wyjdź z menu administracyjnego");
+            Console.WriteLine("7. Importowanie danych");
+            Console.WriteLine("8. Exportowanie danych");
+            Console.WriteLine("9. Wyjdź z menu administracyjnego");
             Console.Write("\nWybierz operację: ");
 
             _ = int.TryParse(Console.ReadLine(), out int choice);
@@ -188,6 +237,15 @@ namespace VendingMachine
                     ManageInventory();
                     break;
                 case 7:
+                    Console.Clear();
+                    ImportData();
+                    Console.ReadKey();
+                    Console.Clear();
+                    ManageInventory();
+                    break;
+                case 8:
+                    break;
+                case 9:
                     Console.ForegroundColor = ConsoleColor.Green;
                     Console.Write("\nWyjście z menu administracyjnego...");
                     Console.ForegroundColor = ConsoleColor.White;

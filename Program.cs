@@ -47,7 +47,7 @@
                         Environment.Exit(0);
                         break;
                     default:
-                        CustomWarnings.MainMenuChoiceWarning();
+                        CustomWarnings.ChoiceWarning();
                         Console.ReadLine();
                         Console.Clear();
                         break;

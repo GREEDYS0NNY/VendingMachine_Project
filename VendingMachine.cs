@@ -1,10 +1,57 @@
 ﻿using System.Data.SqlClient;
+using System.Globalization;
+using IronXL;
 
 namespace VendingMachine
 {
-    internal class VendingMachine
+    internal class VendingMachine : IDataAccess
     {
         private readonly string connectionString = @"Data Source=GREED;Initial Catalog=VendingMachine;Integrated Security=True;";
+
+        public void ImportData(string fileName)
+        {
+            WorkBook workBook = WorkBook.Load($"{Directory.GetCurrentDirectory()}\\{fileName}");
+            WorkSheet workSheet = workBook.WorkSheets.First();
+
+            int rowsCount = workSheet.RowCount;
+
+            RemoveAllDrinks();
+
+            for (int i = 0; i < rowsCount; i++)
+            {
+                using SqlConnection connection = new(connectionString);
+                connection.Open();
+
+                string insertQuery = "INSERT INTO Drinks (Id, Name, Price) VALUES (@Id, @Name, @Price)";
+
+                using SqlCommand command = new(insertQuery, connection);
+
+                if (fileName.Contains(".csv"))
+                {
+                    string[] row = workSheet.GetRow(i).ToString().Split(',');
+
+                    command.Parameters.AddWithValue("@Id", Convert.ToInt32(row[0]));
+                    command.Parameters.AddWithValue("@Name", row[1]);
+                    command.Parameters.AddWithValue("@Price", Convert.ToDecimal(row[2], CultureInfo.InvariantCulture));
+
+                    command.ExecuteNonQuery();
+                }
+                else
+                {
+                    IronXL.Range idRows = workSheet[$"A1:A{rowsCount}"];
+                    IronXL.Range nameRows = workSheet[$"B1:B{rowsCount}"];
+                    IronXL.Range priceRows = workSheet[$"C1:C{rowsCount}"];
+
+                    command.Parameters.AddWithValue("@Id", idRows.ToArray()[i].GetValue<int>());
+                    command.Parameters.AddWithValue("@Name", nameRows.ToArray()[i].GetValue<string>());
+                    command.Parameters.AddWithValue("@Price", priceRows.ToArray()[i].GetValue<decimal>());
+
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public void ExportData(string fileName) { }
 
         public void AddDrink(Drink drink)
         {
@@ -47,6 +94,17 @@ namespace VendingMachine
             using SqlCommand command = new(deleteQuery, connection);
             command.Parameters.AddWithValue("@drinkId", drinkId);
 
+            command.ExecuteNonQuery();
+        }
+
+        public void RemoveAllDrinks()
+        {
+            using SqlConnection connection = new(connectionString);
+            connection.Open();
+
+            string deleteQuery = "TRUNCATE TABLE Drinks";
+
+            using SqlCommand command = new(deleteQuery, connection);
             command.ExecuteNonQuery();
         }
 
