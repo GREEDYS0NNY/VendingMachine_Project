@@ -44,6 +44,10 @@
                 }
                 if (totalSum - drinkPrice != 0.00m) { Console.WriteLine($"\nWeź swoją resztę: {totalSum - drinkPrice} zł."); }
 
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.Write("\nDziękujemy za zakup!");
+                Console.ForegroundColor = ConsoleColor.White;
+
                 Transaction transaction = new()
                 {
                     PurchasedDrink = selectedDrink,
@@ -55,13 +59,21 @@
             else 
             { 
                 CustomWarnings.DrinkChoiceWarning();
-                BuyDrink();
+                Console.Write("\nCzy chcesz kontynuować? Tak/Nie: ");
+                string? choice = Console.ReadLine();
+
+                if (choice is not null)
+                {
+                    if (choice.ToLower() == "tak") { BuyDrink(); }
+                    else { Console.Write("\nNaciśnij Enter, aby wyjść do menu głównego."); }
+                }
+                else { CustomWarnings.NullWarning(); }
             }
         }
 
         private bool CheckCoinDenomination(decimal coin)
         {
-            string[] validCoins = ["0,01", "0,02", "0,05", "0,10", "0,20", "0,50", "1,00", "2", "5"];
+            string[] validCoins = ["0,01", "0,02", "0,05", "0,10", "0,20", "0,50", "1", "2", "5"];
             string stringCoin = coin.ToString();
 
             if (validCoins.Contains(stringCoin)) { return true; }

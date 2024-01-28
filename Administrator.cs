@@ -136,10 +136,7 @@
             {
                 Drink removedDrink = vendingMachine.GetDrinkById(drinkId);
 
-                if (removedDrink.Id != 0)
-                {
-                    vendingMachine.RemoveDrink(drinkId);
-                }
+                if (removedDrink.Id != 0) { vendingMachine.RemoveDrink(drinkId); }
                 else { IdWarning(); }
             }
             else { IdWarning(); }
@@ -322,7 +319,7 @@
             else
             {
                 Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine("\nDostęp przyznany!");
+                Console.Write("\nDostęp przyznany!");
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.ReadKey();
                 return true;

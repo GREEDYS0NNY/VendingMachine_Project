@@ -26,13 +26,8 @@
                 {
                     case 1:
                         Console.Clear();
-
                         vendingMachine.ViewAvailableDrinks();
                         user.BuyDrink();
-
-                        Console.ForegroundColor = ConsoleColor.Green;
-                        Console.Write("\nDziękujemy za zakup!");
-                        Console.ForegroundColor = ConsoleColor.White;
                         Console.ReadKey();
                         Console.Clear();
                         break;
